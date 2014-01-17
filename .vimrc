@@ -11,7 +11,7 @@ set relativenumber
 set number
 
 "Auto close { in java
-autocmd FileType *.java inoremap { {<cr>}<esc>kA
+autocmd FileType java inoremap { {<cr>}<esc>kA
 
 "Change indent behavior for html
 autocmd FileType html setlocal sw=2 sts=2
