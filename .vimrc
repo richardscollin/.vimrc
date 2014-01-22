@@ -10,17 +10,21 @@ set nowrap
 set relativenumber
 set number
 
-"Auto close { in java
-autocmd FileType java inoremap { {<cr>}<esc>kA
 
-"Change indent behavior for html
-autocmd FileType html setlocal sw=2 sts=2
-autocmd FileType make setlocal noexpandtab
+
+if has("autocmd")
+    "Auto close { in java
+    autocmd FileType java inoremap { {<cr>}<esc>kA
+
+    "Change indent behavior for html
+    autocmd FileType html setlocal sw=2 sts=2
+    autocmd FileType make setlocal noexpandtab
+
+endif
 
 "Abreviations
 abbreviate psvm public static void main
 abbreviate sop System.out.println
-
 
 "goto normal mode by pressing jk 
 inoremap jk <esc>
@@ -33,6 +37,9 @@ nnoremap d- d$
 "insert charater
 nnoremap s i_<esc>r
 nnoremap S a_<esc>r
+
+"Pressing space in normal mode adds a new line
+nnoremap <space> o<esc>
  
 nnoremap ; :
 
