@@ -18,7 +18,7 @@ if has("autocmd")
 
     "Change indent behavior for html
     autocmd FileType html setlocal sw=2 sts=2
-    autocmd FileType make setlocal noexpandtab
+    autocmd FileType make setlocal noexpandtab tabstop=8
 
 endif
 
