@@ -6,9 +6,11 @@ set softtabstop=4
 set expandtab
 
 set nowrap
+
 "Line number Stuff
+"I had these set until I realized how much they can lag vim
 "set relativenumber
-set number
+"set number
 
 
 
@@ -27,10 +29,11 @@ if has("autocmd")
 
     "Behavior for tex files
     autocmd FileType tex noremap <f5> <esc>:w<cr> <esc>:!pdflatex %<cr>
-    autocmd FileType tex inoremap <f2> <esc>:call Begin()<cr>
+    autocmd FileType tex noremap <f2> <esc>:call Begin()<cr>i
 
 endif
 
+"Probably could be done better
 :function Begin() 
 :   call inputsave()
 :   let astring = input('value: ')
@@ -38,7 +41,6 @@ endif
 :   let command = "normal! i\\begin{".astring."}\r\r\\end{".astring."}"
 :   execute command
 :   execute "normal! ki\t"
-:   
 :endfunction
 
 "goto normal mode by pressing jk 
@@ -49,18 +51,21 @@ nnoremap - $
 nnoremap y- y$
 nnoremap d- d$
 
-"insert charater
-nnoremap s i_<esc>r
-nnoremap S a_<esc>r
+"insert charater works with .
+nnoremap s :exec "normal i".nr2char(getchar())."\e"<CR>
+nnoremap S :exec "normal a".nr2char(getchar())."\e"<CR>
 
 "Pressing space in normal mode adds a new line
 nnoremap <space> o<esc>
  
+"Don't have to press shift
 nnoremap ; :
 
 "command mode aliases
 cnoremap q1 q!
 
-"Yanks to clipboard 
+"Yanks are added to the clipboard.
+"Making it possible to paste outside
+"of vim. Must have the correct version of vim.
 set clipboard=unnamed
 set clipboard=unnamedplus
