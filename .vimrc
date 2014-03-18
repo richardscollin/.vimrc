@@ -1,3 +1,4 @@
+set shell=/bin/sh
 "Indentation Stuff
 set smartindent
 set tabstop=8
@@ -12,25 +13,43 @@ set nowrap
 "set relativenumber
 "set number
 
+"Common mistakes
+abbreviate retrun return
 
 
 if has("autocmd")
+augroup all
+    autocmd!
+
     "Curly Brace behavior
     autocmd FileType java,c,javascript inoremap {} {}<left>
     autocmd FileType java,c,javascript inoremap {<cr> {}<left><cr><cr><esc>==kA
+
     "Java abbreviations
-    autocmd FileType java abbreviate psvm public static void main
+    autocmd BufNewFile *.java call Mkjava()
+    autocmd FileType java abbreviate psvm public static void main(String[] args)
     autocmd FileType java abbreviate sop System.out.println
     autocmd FileType java noremap <f5> <esc>:w<cr> <esc>:!run %<cr>
 
+    "For jcommentor.vim
+    autocmd FileType java source ~/.vim/macros/jcommenter.vim 
+    autocmd Filetype java let b:jcommenter_class_author='Collin Richards'
+    autocmd Filetype java let b:jcommentor_file_author='Collin Richards'
+    autocmd Filetype java nnoremap <F2> :call JCommentWriter()<CR>
+
     "Change indent behavior for html
     autocmd FileType html setlocal sw=2 sts=2
+    autocmd FileType html noremap <f5> <esc>:w<cr> <esc>:!firefox % &<cr>
+
+    "Makefile behavior (currently not working)
     autocmd FileType make setlocal noexpandtab tabstop=8
 
     "Behavior for tex files
     autocmd FileType tex noremap <f5> <esc>:w<cr> <esc>:!pdflatex %<cr>
     autocmd FileType tex noremap <f2> <esc>:call Begin()<cr>i
+    autocmd FileType tex noremap <f3> <esc>i\shortintertext{}<esc>i
 
+augroup END
 endif
 
 "Probably could be done better
@@ -43,15 +62,21 @@ endif
 :   execute "normal! ki\t"
 :endfunction
 
+"Generates java boilerplate
+:function Mkjava()
+:   0r ~/.vim/skeleton/skeleton.java
+:   let classname = expand('%:r')
+:   execute "%s/TODO/".classname."/g"
+:endfunction
+
 "goto normal mode by pressing jk 
 inoremap jk <esc>
 
 "Use - for end of line
 nnoremap - $
-nnoremap y- y$
-nnoremap d- d$
+onoremap - $
 
-"insert charater works with .
+"insert charater s works with .
 nnoremap s :exec "normal i".nr2char(getchar())."\e"<CR>
 nnoremap S :exec "normal a".nr2char(getchar())."\e"<CR>
 
