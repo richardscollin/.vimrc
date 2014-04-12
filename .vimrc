@@ -13,9 +13,20 @@ set nowrap
 "set relativenumber
 "set number
 
+"Speeds up vim
+"let loaded_matchparen = 1
+
 "Common mistakes
 abbreviate retrun return
+abbreviate teh the
 
+"pathogen package manager
+execute pathogen#infect()
+
+"eclim settings
+filetype plugin indent on
+"let &runtimepath = &runtimepath.",~/.vim/eclim/autoload/eclim/android"
+let g:SuperTabDefaultCompletionType = 'context'
 
 if has("autocmd")
 augroup all
@@ -25,17 +36,24 @@ augroup all
     autocmd FileType java,c,javascript inoremap {} {}<left>
     autocmd FileType java,c,javascript inoremap {<cr> {}<left><cr><cr><esc>==kA
 
-    "Java abbreviations
+    "Java settings
     autocmd BufNewFile *.java call Mkjava()
     autocmd FileType java abbreviate psvm public static void main(String[] args)
     autocmd FileType java abbreviate sop System.out.println
     autocmd FileType java noremap <f5> <esc>:w<cr> <esc>:!run %<cr>
+    autocmd FileType java let Checkstyle_Classpath = '~/documents/code/java/.checkstyle-5.6-all.jar'
+    autocmd FileType java let Checkstyle_XML = '~/documents/code/java/.cs1331-checkstyle.xml'
+
 
     "For jcommentor.vim
     autocmd FileType java source ~/.vim/macros/jcommenter.vim 
     autocmd Filetype java let b:jcommenter_class_author='Collin Richards'
     autocmd Filetype java let b:jcommentor_file_author='Collin Richards'
     autocmd Filetype java nnoremap <F2> :call JCommentWriter()<CR>
+
+    "For gas.vim
+    autocmd FileType java source ~/.vim/macros/gas.vim
+    autocmd FileType java nnoremap <F3> :call Gas() <CR>
 
     "Change indent behavior for html
     autocmd FileType html setlocal sw=2 sts=2
@@ -65,7 +83,7 @@ endif
 "Generates java boilerplate
 :function Mkjava()
 :   0r ~/.vim/skeleton/skeleton.java
-:   let classname = expand('%:r')
+:   let classname = expand('%:t:r')
 :   execute "%s/TODO/".classname."/g"
 :endfunction
 
